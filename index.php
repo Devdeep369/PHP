@@ -1,44 +1,35 @@
 <?php
 $insert = false;
 if(isset($_POST['name'])){
-    // set connection variables
-    $server = "localhost";
-    $user = "root";
-    $password = "";
-    
-    // create databases connection
-    $conn = mysqli_connect($server, $user, $password);
+  $server = "localhost";
+  $user = "root";
+  $password = "";
 
-    // check connection successs
-    if(!$conn){
-        die("CONNECTION FAILED ". mysqli_connect_error());
-    }
-    // echo "CONNECTION SUCCESSFUL!";
+  $conn = mysqli_connect($server, $user, $password);
 
-    // COLLECT POST VARIABLES
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $age = $_POST['age'];
-    $gender = $_POST['gender'];
-    $phone = $_POST['phone'];
-    $msg = $_POST['msg'];
+  if(!$conn){
+    die("CONNECTION FAILED" . mysqli_connect_error());
+  }
+  // echo "CONNECTION SUCCESSFUL!";
 
-    $sql = "INSERT INTO `form`.`students` (`name`, `email`, `age`, `gender`, `phone`, `msg`, `dt`) VALUES ('$name', '$email', '$age', '$gender', '$phone', '$msg', current_timestamp())";
-    // echo $sql;
+  $name = $_POST['name'];
+  $email = $_POST['email'];
+  $password = $_POST['password'];
+  $phone = $_POST['phone'];
+  $msg = $_POST['msg'];
 
-    // EXCUTE QUERY connection == object opeartor
-    if($conn->query($sql) == true){
-        // echo "SUCCESFULLY INSERTED!";
-        // flag for successfull conection
-        $insert = true;
-    }
-    else {
-        echo "ERROR: $sql <br> $conn->error";
-    }
+  $sql = "INSERT INTO `form`.`students` (`name`, `email`, `password`, `phone`, `msg`, `dt`) VALUES ('$name', '$email', '$password', '$phone', '$msg', current_timestamp())";
+  // echo $sql;
 
-    // close connection
-    $conn->close();
-} 
+  if($conn->query($sql) == true){
+    // echo "SUCCESSFULLY INSERTED";
+    $insert = true;
+  }else {
+    echo "ERROR: $sql <br> . $conn->error";
+  }
+
+  $conn->close();
+}
 ?>
 
 <!DOCTYPE html>
@@ -55,17 +46,12 @@ if(isset($_POST['name'])){
     <div class="container">
       <h2>Welcome to Devdeep University</h2>
       <p>Enter your Details and Submit your Participation on the Form.</p>
-      <?php
-      if($insert == true){
-        echo "<p class='sbm'>Thanks for submitting form.</p>";
-      }
-       ?>
+      
        
     <form action="index.php" method="post">
         <input type="text" name="name" id="name" placeholder="Enter your Name" require>
         <input type="email" name="email" id="email" placeholder="Enter Your Email" require>
-        <input type="text" name="age" id="age" placeholder="Enter Your Age" require>
-        <input type="text" name="gender" id="gender" placeholder="Enter Your Gender">
+        <input type="password" name="password" id="password" placeholder="Enter Your Password">
         <input type="phone" name="phone" id="phone" placeholder="Enter Your Phone Num">
         <textarea name="msg" id="msg" cols="30" rows="10" placeholder="Enter Any Other Info Here"></textarea>
         <button class="btn">Submit</button>
